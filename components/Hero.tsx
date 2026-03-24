@@ -13,44 +13,42 @@ const Hero = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const heroRef = useRef<HTMLElement>(null);
 
-  useGSAP(() => {
-    // SplitText animations
-    const heroSplit = new SplitText(".title", { type: "chars, words" });
-    const paragraphSplit = new SplitText(".subtitle", { type: "lines" });
+useGSAP(() => {
+  const heroSplit = new SplitText(".title", { type: "chars, words" });
+  const paragraphSplit = new SplitText(".subtitle", { type: "lines" });
 
-    heroSplit.chars.forEach((char) => char.classList.add("text-gradient"));
+  heroSplit.chars.forEach((char) => char.classList.add("text-gradient"));
 
-    gsap.from(heroSplit.chars, {
-      yPercent: 100,
-      duration: 1.8,
-      ease: "expo.out",
-      stagger: 0.06,
+  gsap.from(heroSplit.chars, {
+    yPercent: 100,
+    duration: 1.8,
+    ease: "expo.out",
+    stagger: 0.06,
+  });
+
+  gsap.from(paragraphSplit.lines, {
+    opacity: 0,
+    yPercent: 100,
+    duration: 1.8,
+    ease: "expo.out",
+    stagger: 0.06,
+    delay: 1,
+  });
+
+  // ✅ ONLY apply parallax on desktop
+  if (!isMobile && heroRef.current) {
+    gsap.to(heroRef.current, {
+      backgroundPosition: "50% 30%",
+      ease: "none",
+      scrollTrigger: {
+        trigger: heroRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: true,
+      },
     });
-
-    gsap.from(paragraphSplit.lines, {
-      opacity: 0,
-      yPercent: 100,
-      duration: 1.8,
-      ease: "expo.out",
-      stagger: 0.06,
-      delay: 1,
-    });
-
-    // Parallax background effect (optional subtle vertical shift)
-    if (heroRef.current) {
-      gsap.to(heroRef.current, {
-        backgroundPosition: "50% 30%", // moves from center 50% to 30% vertical
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }
-  }, [isMobile]);
-
+  }
+}, [isMobile]);
   return (
     <section
       id="hero"
