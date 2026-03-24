@@ -34,7 +34,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 transition-colors">
-      <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
+      <div className="max-w-7xl mx-auto flex flex-row items-center justify-between p-4">
         {/* Logo */}
         <Link href="#home" className="flex items-center gap-2">
           <Image
@@ -45,7 +45,7 @@ const Navbar = () => {
             className="rounded-full object-cover"
           />
           <p className="font-bold text-lg md:text-xl text-white">
-            Stephano <span className="text-yellow-500">Fitness Mentor</span>
+            Stephano <span className="text-yellow-500">Fitness</span>
           </p>
         </Link>
 
