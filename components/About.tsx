@@ -48,17 +48,17 @@ const About = () => {
         stagger: 0.15,
       });
 
-gsap.from(".about-title", {
-  opacity: 0,
-  y: 50,
-  duration: 1,
-  ease: "power2.out",
-  scrollTrigger: {
-    trigger: ".about-title",
-    start: "top 80%", // when top of element is at 80% viewport height
-    toggleActions: "play none none reset", // play on enter, reset on leave
-  },
-});
+      gsap.from(".about-title", {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".about-title",
+          start: "top 80%", // when top of element is at 80% viewport height
+          toggleActions: "play none none reset", // play on enter, reset on leave
+        },
+      });
 
       // Image animation
       gsap.from(".about-image", {
@@ -83,7 +83,6 @@ gsap.from(".about-title", {
       className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20"
     >
       <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl w-full">
-        
         {/* LEFT - IMAGE */}
         <div className="about-image relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
           <Image
@@ -109,23 +108,24 @@ gsap.from(".about-title", {
           {/* Text */}
           <div className="space-y-5 text-white text-lg md:text-xl leading-relaxed">
             <p className="about-text">
-              Six years ago, I started my fitness journey for the same reasons many do:
-              I wanted more confidence, better health, and to perform better in sports.
+              Six years ago, I started my fitness journey for the same reasons
+              many do: I wanted more confidence, better health, and to perform
+              better in sports.
             </p>
 
             <p className="about-text">
-              I spent years in and out of the gym, pushing heavy weights and following
-              the ‘bro-science’ advice I saw online.
+              I spent years in and out of the gym, pushing heavy weights and
+              following the ‘bro-science’ advice I saw online.
             </p>
 
             <p className="about-text">
-              But something was off. Despite the heavy lifting and the hours spent in
-              the gym, my body stayed flat.
+              But something was off. Despite the heavy lifting and the hours
+              spent in the gym, my body stayed flat.
             </p>
 
             <p className="about-text text-yellow-500 font-semibold">
-              I wasn’t seeing the muscle gains or the transformation I was working so
-              hard for.
+              I wasn’t seeing the muscle gains or the transformation I was
+              working so hard for.
             </p>
           </div>
         </div>
