@@ -92,7 +92,7 @@ body {
 
 /* Overlay to control image visibility without affecting content */
 .hero-overlay {
-  @apply absolute inset-0 bg-black/70; /* 90% opacity black overlay */
+  @apply absolute inset-0 bg-black/50; /* 90% opacity black overlay */
 }
 
     #hero {

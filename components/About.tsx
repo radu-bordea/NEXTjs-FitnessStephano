@@ -22,6 +22,10 @@ const About = () => {
         type: "lines",
       });
 
+      const ahaSplit = new SplitText(".aha-text", {
+        type: "lines",
+      });
+
       // Title animation
       gsap.from(titleSplit.chars, {
         scrollTrigger: {
@@ -35,7 +39,7 @@ const About = () => {
         stagger: 0.03,
       });
 
-      // Text animation
+      // Main text animation
       gsap.from(paragraphSplit.lines, {
         scrollTrigger: {
           trigger: ".about-text",
@@ -48,16 +52,18 @@ const About = () => {
         stagger: 0.15,
       });
 
-      gsap.from(".about-title", {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: "power2.out",
+      // AHA MOMENT animation (separate trigger)
+      gsap.from(ahaSplit.lines, {
         scrollTrigger: {
-          trigger: ".about-title",
-          start: "top 80%", // when top of element is at 80% viewport height
-          toggleActions: "play none none reset", // play on enter, reset on leave
+          trigger: ".aha-section",
+          start: "top 85%",
+          toggleActions: "play none none reset",
         },
+        y: 40,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power3.out",
+        stagger: 0.1,
       });
 
       // Image animation
@@ -80,55 +86,78 @@ const About = () => {
     <section
       id="about"
       ref={aboutRef}
-      className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20"
+      className="min-h-screen  "
     >
-      <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl w-full">
-        {/* LEFT - IMAGE */}
-        <div className="about-image relative w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-lg">
-          <Image
-            src="/images/stephano.jpg"
-            alt="Stephano Fitness"
-            fill
-            className="object-cover hover:scale-140 duration-1500"
-          />
-        </div>
+      <div className="flex items-center justify-center px-6 md:px-10 py-20">
+        <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl w-full">
+          {/* IMAGE */}
+          <div className="about-image relative w-full h-100 md:h-125 rounded-2xl overflow-hidden shadow-lg">
+            <Image
+              src="/images/stephano.jpg"
+              alt="Stephano Fitness"
+              fill
+              className="object-cover hover:scale-110 duration-700"
+            />
+          </div>
 
-        {/* RIGHT - TEXT */}
-        <div className="space-y-6 text-center md:text-left">
-          {/* Title */}
-          <h2 className="about-title font-modern-negra text-4xl md:text-6xl text-yellow-500">
-            About Me
-          </h2>
+          {/* TEXT */}
+          <div className="space-y-6 text-center border-2">
+            {/* Title */}
+            <h2 className="about-title font-modern-negra text-4xl md:text-6xl text-yellow-500">
+              About Me
+            </h2>
 
-          {/* Subtitle */}
-          <h3 className="about-title text-xl md:text-2xl font-serif italic text-white/80">
-            My 6-Year Journey
-          </h3>
+            <h3 className="about-title text-xl md:text-2xl font-serif italic text-white/80">
+              My 6-Year Journey
+            </h3>
 
-          {/* Text */}
-          <div className="space-y-5 text-white text-lg md:text-xl leading-relaxed">
-            <p className="about-text">
-              Six years ago, I started my fitness journey for the same reasons
-              many do: I wanted more confidence, better health, and to perform
-              better in sports.
-            </p>
+            {/* Main story */}
+            <div className="space-y-5 text-white text-lg md:text-xl leading-relaxed">
+              <p className="about-text">
+                Six years ago, I started my fitness journey for the same reasons
+                many do: I wanted more confidence, better health, and to perform
+                better in sports.
+              </p>
 
-            <p className="about-text">
-              I spent years in and out of the gym, pushing heavy weights and
-              following the ‘bro-science’ advice I saw online.
-            </p>
+              <p className="about-text">
+                I spent years in and out of the gym, pushing heavy weights and
+                following the ‘bro-science’ advice I saw online.
+              </p>
 
-            <p className="about-text">
-              But something was off. Despite the heavy lifting and the hours
-              spent in the gym, my body stayed flat.
-            </p>
+              <p className="about-text">
+                But something was off. Despite the heavy lifting and the hours
+                spent in the gym, my body stayed flat.
+              </p>
 
-            <p className="about-text text-yellow-500 font-semibold">
-              I wasn’t seeing the muscle gains or the transformation I was
-              working so hard for.
-            </p>
+              <p className="about-text text-yellow-500 font-semibold">
+                I wasn’t seeing the muscle gains or the transformation I was
+                working so hard for.
+              </p>
+            </div>
           </div>
         </div>
+      </div>
+      {/* 🔥 AHA MOMENT */}
+      <div className="aha-section mt-8 space-y-4 border-l-4 border-yellow-500 pl-4 px-6 md:px-10 py-20 max-w-6xl text-center mx-auto">
+        <h4 className="text-yellow-500 font-bold text-lg uppercase tracking-wide">
+          The “Aha!” Moment
+        </h4>
+
+        <p className="aha-text text-white text-lg leading-relaxed">
+          I realized that ‘moving the weight’ isn’t the same as ‘training the
+          muscle.’ I shifted my focus from ego-lifting to form mastery.
+        </p>
+
+        <p className="aha-text text-white text-lg leading-relaxed">
+          Once I mastered the ‘Wrong vs. Right’ of every movement, like setting
+          my shoulders for lat pull-downs or leading with my elbows on lateral
+          raises, everything changed.
+        </p>
+
+        <p className="aha-text text-yellow-500 font-semibold text-lg leading-relaxed">
+          Not just my physique, but my discipline, my mental health, and my
+          energy for my daily life.
+        </p>
       </div>
     </section>
   );
