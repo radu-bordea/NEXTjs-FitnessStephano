@@ -86,13 +86,14 @@ body {
 
 /* Hero container */
 .noisy {
-  @apply relative w-full min-h-[100dvh] bg-cover bg-center bg-no-repeat;
+  @apply relative w-full min-h-dvh bg-cover bg-center bg-no-repeat;
   background-image: url("/images/gym1.jpg");
+  
 }
 
 /* Overlay to control image visibility without affecting content */
 .hero-overlay {
-  @apply absolute inset-0 bg-black/50; /* 90% opacity black overlay */
+  @apply absolute inset-0 bg-black/40; /* 90% opacity black overlay */
 }
 
     #hero {

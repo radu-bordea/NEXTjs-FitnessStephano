@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Programs from "@/components/Programs";
+import FormAudit from "@/components/FormAudit";
 
 
 // Register GSAP plugins (required for them to work)
@@ -15,6 +16,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Programs/>
+      <FormAudit/>
       <About/>
       <div className="h-[200vh] bg-black"></div>
     </main>

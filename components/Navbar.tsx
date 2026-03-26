@@ -42,7 +42,8 @@ const Navbar = () => {
             alt="Stephano Fitness Mentor Logo"
             width={60}
             height={60}
-            className="rounded-full object-cover"
+            priority
+            className="w-15 h-15 rounded-full object-cover"
           />
           <p className="font-bold text-lg md:text-xl text-white">
             Stephano <span className="text-yellow-500">Fitness</span>

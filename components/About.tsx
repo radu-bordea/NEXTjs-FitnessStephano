@@ -12,7 +12,8 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 const About = () => {
   const aboutRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
+useGSAP(() => {
+  document.fonts.ready.then(() => {
     const ctx = gsap.context(() => {
       const titleSplit = new SplitText(".about-title", {
         type: "chars, words",
@@ -26,7 +27,6 @@ const About = () => {
         type: "lines",
       });
 
-      // Title animation
       gsap.from(titleSplit.chars, {
         scrollTrigger: {
           trigger: ".about-title",
@@ -39,7 +39,6 @@ const About = () => {
         stagger: 0.03,
       });
 
-      // Main text animation
       gsap.from(paragraphSplit.lines, {
         scrollTrigger: {
           trigger: ".about-text",
@@ -52,7 +51,6 @@ const About = () => {
         stagger: 0.15,
       });
 
-      // AHA MOMENT animation (separate trigger)
       gsap.from(ahaSplit.lines, {
         scrollTrigger: {
           trigger: ".aha-section",
@@ -66,7 +64,6 @@ const About = () => {
         stagger: 0.1,
       });
 
-      // Image animation
       gsap.from(".about-image", {
         scrollTrigger: {
           trigger: ".about-image",
@@ -80,14 +77,11 @@ const About = () => {
     }, aboutRef);
 
     return () => ctx.revert();
-  }, []);
+  });
+}, []);
 
   return (
-    <section
-      id="about"
-      ref={aboutRef}
-      className="min-h-screen  "
-    >
+    <section id="about" ref={aboutRef} className="min-h-screen  ">
       <div className="flex items-center justify-center px-6 md:px-10 py-20">
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl w-full">
           {/* IMAGE */}
@@ -96,12 +90,14 @@ const About = () => {
               src="/images/stephano.jpg"
               alt="Stephano Fitness"
               fill
+              priority
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover hover:scale-110 duration-700"
             />
           </div>
 
           {/* TEXT */}
-          <div className="space-y-6 text-center border-2">
+          <div className="space-y-6 text-center">
             {/* Title */}
             <h2 className="about-title font-modern-negra text-4xl md:text-6xl text-yellow-500">
               About Me

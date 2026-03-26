@@ -4,34 +4,34 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
-import { FaDumbbell, FaUserAlt, FaRunning } from "react-icons/fa";
+import { programs } from "@/utils/program";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Programs = () => {
   const programsRef = useRef<HTMLDivElement>(null);
 
-useGSAP(() => {
-  const ctx = gsap.context(() => {
-    const cards = gsap.utils.toArray(".program-card");
+  useGSAP(() => {
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>(".program-card");
 
-    cards.forEach((card) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          toggleActions: "play none none reverse",
-        },
-        y: 60,
-        opacity: 0,
-        duration: 1,
-        ease: "power3.out",
+      cards.forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+          y: 60,
+          opacity: 0,
+          duration: 1,
+          ease: "power3.out",
+        });
       });
-    });
-  }, programsRef);
+    }, programsRef);
 
-  return () => ctx.revert();
-}, []);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
@@ -53,53 +53,28 @@ useGSAP(() => {
 
       {/* CARDS */}
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {/* CARD 1 */}
-        <div className="program-card group bg-black/40 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-yellow-500 transition-all duration-300">
-          <div className="flex items-center justify-center w-20 h-20 mb-6 mx-auto rounded-full bg-yellow-500/10 text-yellow-500 text-4xl transition-all duration-300 group-hover:scale-110 group-hover:bg-yellow-500 group-hover:text-black">
-            <FaDumbbell />
-          </div>
+        {programs.map((program, index) => {
+          const Icon = program.icon;
 
-          <h3 className="text-xl font-bold text-white mb-3 text-center">
-            The Busy Professional
-          </h3>
+          return (
+            <div
+              key={index}
+              className="program-card group bg-black/40 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-yellow-500 transition-all duration-300"
+            >
+              <div className="flex items-center justify-center w-20 h-20 mb-6 mx-auto rounded-full bg-yellow-500/10 text-yellow-500 text-4xl transition-all duration-300 group-hover:scale-110 group-hover:bg-yellow-500 group-hover:text-black">
+                <Icon />
+              </div>
 
-          <p className="text-white/70 leading-relaxed text-center">
-            You have no time to waste. I provide high-efficiency workouts that
-            deliver maximum results in minimum time.
-          </p>
-        </div>
+              <h3 className="text-xl font-bold text-white mb-3 text-center">
+                {program.title}
+              </h3>
 
-        {/* CARD 2 */}
-        <div className="program-card group bg-black/40 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-yellow-500 transition-all duration-300">
-          <div className="flex items-center justify-center w-20 h-20 mb-6 mx-auto rounded-full bg-yellow-500/10 text-yellow-500 text-4xl transition-all duration-300 group-hover:scale-110 group-hover:bg-yellow-500 group-hover:text-black">
-            <FaUserAlt />
-          </div>
-
-          <h3 className="text-xl font-bold text-white mb-3 text-center">
-            The Gym Beginner
-          </h3>
-
-          <p className="text-white/70 leading-relaxed text-center">
-            If you feel intimidated by the gym, I simplify everything so you can
-            train with confidence and clarity from day one.
-          </p>
-        </div>
-
-        {/* CARD 3 */}
-        <div className="program-card group bg-black/40 backdrop-blur-md rounded-2xl p-8 border border-white/10 hover:border-yellow-500 transition-all duration-300">
-          <div className="flex items-center justify-center w-20 h-20 mb-6 mx-auto rounded-full bg-yellow-500/10 text-yellow-500 text-4xl transition-all duration-300 group-hover:scale-110 group-hover:bg-yellow-500 group-hover:text-black">
-            <FaRunning />
-          </div>
-
-          <h3 className="text-xl font-bold text-white mb-3 text-center">
-            The Plateaued Lifter
-          </h3>
-
-          <p className="text-white/70 leading-relaxed text-center">
-            If you're stuck and not seeing results, I will analyze your form and
-            fix the hidden mistakes holding you back.
-          </p>
-        </div>
+              <p className="text-white/70 leading-relaxed text-center">
+                {program.description}
+              </p>
+            </div>
+          );
+        })}
       </div>
 
       {/* FINAL MESSAGE */}
