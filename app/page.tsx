@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Programs from "@/components/Programs";
 import FormAudit from "@/components/FormAudit";
+import Contact from "@/components/Contact";
 
 
 // Register GSAP plugins (required for them to work)
@@ -18,7 +19,7 @@ export default function Home() {
       <Programs/>
       <FormAudit/>
       <About/>
-      <div className="h-[200vh] bg-black"></div>
+      <Contact/>
     </main>
   );
 }

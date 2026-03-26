@@ -8,6 +8,10 @@ export const navLinks = [
     title: "Programs",
   },
   {
+    id: "audit",
+    title: "Form Audit",
+  },
+  {
     id: "about",
     title: "About Me",
   },
