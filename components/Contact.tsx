@@ -43,14 +43,14 @@ const Contact = () => {
           <div className="contact-card bg-black/40 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
             <Mail className="mx-auto text-yellow-500 mb-3" size={28} />
             <h3 className="text-white font-semibold mb-2">Email</h3>
-            <p className="text-white/70">stephano.fitness@gmail.com</p>
+            <a href="mailto:stephanokanyana@gmail.com" className="text-white/70">stephanokanyana@gmail.com</a>
           </div>
 
           {/* Phone */}
           <div className="contact-card bg-black/40 border border-white/10 rounded-2xl p-6 backdrop-blur-md">
             <Phone className="mx-auto text-yellow-500 mb-3" size={28} />
             <h3 className="text-white font-semibold mb-2">Phone</h3>
-            <p className="text-white/70">+1 (555) 123-4567</p>
+            <a href="tel:+4773512456" className="text-white/70">+47 73 51 24 56</a>
           </div>
 
           {/* Location */}
