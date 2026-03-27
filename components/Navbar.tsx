@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,16 +14,12 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Handle scroll for background change
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Optional: GSAP for smooth background fade
   useEffect(() => {
     gsap.to("nav", {
       backgroundColor: scrolled ? "rgba(0,0,0,0.7)" : "transparent",
@@ -50,39 +47,50 @@ const Navbar = () => {
           </p>
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden md:flex gap-8 text-white">
-          {navLinks.map((link) => (
-            <li key={link.id}>
-              <Link
-                href={`#${link.id}`}
-                className="hover:text-yellow-500 transition-colors"
-              >
-                {link.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Desktop links + auth */}
+        <div className="hidden md:flex items-center gap-8">
+          <ul className="flex gap-8 text-white">
+            {navLinks.map((link) => (
+              <li key={link.id}>
+                <Link
+                  href={`#${link.id}`}
+                  className="hover:text-yellow-500 transition-colors"
+                >
+                  {link.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
 
-        {/* Hamburger button */}
+          {/* Auth buttons */}
+          <header className="flex justify-end items-center p-4 gap-4 h-16">
+            <Show when="signed-out">
+              <SignInButton />
+              <SignUpButton>
+                <button className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
+          </header>
+        </div>
+
+        {/* Hamburger */}
         <button
           className="md:hidden flex flex-col gap-1.5"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <span
-            className={`block w-6 h-0.5 bg-white transition-transform ${
-              mobileOpen ? "rotate-45 translate-y-2" : ""
-            }`}
+            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
           />
           <span
-            className={`block w-6 h-0.5 bg-white transition-opacity ${
-              mobileOpen ? "opacity-0" : ""
-            }`}
+            className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`}
           />
           <span
-            className={`block w-6 h-0.5 bg-white transition-transform ${
-              mobileOpen ? "-rotate-45 -translate-y-2" : ""
-            }`}
+            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
           />
         </button>
       </div>
@@ -101,6 +109,21 @@ const Navbar = () => {
               </Link>
             </li>
           ))}
+
+          {/* Mobile auth */}
+          <li className="space-x-3">
+            <Show when="signed-out">
+              <SignInButton />
+              <SignUpButton>
+                <button className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold">
+                  Sign Up
+                </button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <UserButton />
+            </Show>
+          </li>
         </ul>
       )}
     </nav>
