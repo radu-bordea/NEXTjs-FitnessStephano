@@ -1,0 +1,12 @@
+[33m07796f4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m implement prisma neon and clerk connections
+[33m8dd6eaa[m setup clerk, prisma and neon
+[33m5c295e6[m update contact page
+[33mbbb8967[m fix cotact page
+[33m93f6b77[m add programs and formAudit components
+[33mcbef05b[m create Programs Page
+[33m31ced3b[m fix bug delay about page
+[33m8067ef9[m built about page
+[33mbc15114[m fix gsap for hero
+[33m104da21[m fix gsam scroll bug
+[33m2671182[m create navbar and hero sections and implement animations gsap
+[33m930b0c6[m Initial commit from Create Next App
