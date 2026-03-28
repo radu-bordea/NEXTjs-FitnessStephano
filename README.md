@@ -12,7 +12,8 @@ npx create-next-app@latest nextjs-cocktails
 
 // SHADCN
 - npx shadcn@latest init
-
+- npx shadcn@latest add button
+- npx shadcn@latest add table badge card button avatar
 
 // Prisma
 - npm install prisma tsx @types/pg --save-dev
