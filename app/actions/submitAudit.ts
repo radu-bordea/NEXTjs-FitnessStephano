@@ -3,9 +3,9 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { z } from "zod";
-// import { Resend } from "resend";
+import { Resend } from "resend";
 
-// const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const auditSchema = z.object({
   name: z.string().min(2, { message: "Name is too short" }),
@@ -60,19 +60,19 @@ export async function submitAudit(formData: FormData) {
   });
 
   // 4. Send emails
-  // try {
-  //   await resend.emails.send({
-  //     from: "onboarding@resend.dev",
-  //     to: process.env.TRAINER_EMAIL!,
-  //     subject: `New audit request from ${name}`,
-  //     html: `<h2>New audit</h2><p><b>Name:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Focus:</b> ${lift ?? "—"}</p>`,
-  //   });
-  // } catch (err) {
-  //   console.error("Email failed but submission was saved:", err);
-  //   // don't rethrow — submission already succeeded
-  // }
+  try {
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: process.env.TRAINER_EMAIL!,
+      subject: `New audit request from ${name}`,
+      html: `<h2>New audit</h2><p><b>Name:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Focus:</b> ${lift ?? "—"}</p>`,
+    });
+  } catch (error) {
+    console.error("Email failed but submission was saved:", error);
+    // don't rethrow — submission already succeeded
+  }
 
-  // // confirmation to the user
+  // 5 confirmation to the user
   // try {
   //   await resend.emails.send({
   //     from: "onboarding@resend.dev",
@@ -81,7 +81,7 @@ export async function submitAudit(formData: FormData) {
   //     html: `<p>Hey ${name}, I received your request and will review it shortly. 💪</p>`,
   //   });
   // } catch (error) {
-  //   console.error("Email failed but submission was saved:", err);
+  //   console.error("Email failed but submission was saved:", error);
   //   // don't rethrow — submission already succeeded
   // }
 

@@ -8,6 +8,7 @@ npx create-next-app@latest nextjs-cocktails
 - npm install sonner
 - npm install zod
 - npm install @clerk/nextjs
+- npm install resend
 
 // Prisma
 - npm install prisma tsx @types/pg --save-dev

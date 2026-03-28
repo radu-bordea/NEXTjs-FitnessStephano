@@ -48,8 +48,8 @@ const Navbar = () => {
         </Link>
 
         {/* Desktop links + auth */}
-        <div className="hidden md:flex items-center gap-8">
-          <ul className="flex gap-8 text-white">
+        <div className="hidden lg:flex items-center justify-end gap-16">
+          <ul className="flex gap-4 text-white">
             {navLinks.map((link) => (
               <li key={link.id}>
                 <Link
@@ -80,7 +80,7 @@ const Navbar = () => {
 
         {/* Hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5"
+          className="lg:hidden flex flex-col gap-1.5"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           <span
@@ -97,7 +97,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <ul className="md:hidden flex flex-col bg-black/80 backdrop-blur-lg text-white p-6 gap-6">
+        <ul className="lg:hidden flex flex-col bg-black backdrop-blur-lg text-white p-6 gap-6">
           {navLinks.map((link) => (
             <li key={link.id}>
               <Link
