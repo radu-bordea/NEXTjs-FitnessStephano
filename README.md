@@ -10,8 +10,13 @@ npx create-next-app@latest nextjs-cocktails
 - npm install @clerk/nextjs
 - npm install resend
 
+// SHADCN
+- npx shadcn@latest init
+
+
 // Prisma
 - npm install prisma tsx @types/pg --save-dev
 - npm install @prisma/client @prisma/adapter-pg dotenv pg
 - npx prisma init --output ../app/generated/prisma
 - npx prisma migrate dev --name init
+- npx prisma migrate dev --name added-user-role

@@ -12,10 +12,14 @@ datasource db {
   provider = "postgresql"
 }
 
+// role  String  @default("user") // "user" or "admin"
+// Then manually set yourself to `"admin"` in Prisma Studio or Neon console. Simple, no extra packages needed.
+
 model User {
   id        String   @id // will store Clerk's userId
   email     String   @unique
   name      String?
+  role String @default("user") // "user" or "admin"
   createdAt DateTime @default(now())
 
   auditSubmissions AuditSubmission[]
