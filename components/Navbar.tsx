@@ -75,6 +75,15 @@ const Navbar = () => {
             <Show when="signed-in">
               <UserButton />
             </Show>
+
+            <Show when="signed-in">
+              <Link
+                href="/admin"
+                className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
+              >
+                Dashboard
+              </Link>
+            </Show>
           </header>
         </div>
 
@@ -122,6 +131,15 @@ const Navbar = () => {
             </Show>
             <Show when="signed-in">
               <UserButton />
+            </Show>
+
+            <Show when="signed-in">
+              <Link
+                href="/admin"
+                className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
+              >
+                Dashboard
+              </Link>
             </Show>
           </li>
         </ul>
