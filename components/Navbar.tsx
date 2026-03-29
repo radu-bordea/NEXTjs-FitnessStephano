@@ -120,7 +120,7 @@ const Navbar = () => {
           ))}
 
           {/* Mobile auth */}
-          <li className="space-x-3">
+          <li className="space-x-3 flex">
             <Show when="signed-out">
               <SignInButton />
               <SignUpButton>
@@ -133,14 +133,16 @@ const Navbar = () => {
               <UserButton />
             </Show>
 
-            <Show when="signed-in">
-              <Link
-                href="/admin"
-                className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
-              >
-                Dashboard
-              </Link>
-            </Show>
+            <div>
+              <Show when="signed-in">
+                <Link
+                  href="/admin"
+                  className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
+                >
+                  Dashboard
+                </Link>
+              </Show>
+            </div>
           </li>
         </ul>
       )}
