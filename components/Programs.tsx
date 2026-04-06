@@ -15,6 +15,31 @@ const Programs = () => {
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray<HTMLElement>(".program-card");
 
+      // ✅ HEADER ANIMATION (title + subtitle only)
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: programsRef.current,
+          start: "top 80%",
+        },
+      });
+
+      tl.from(".section-title", {
+        y: 40,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      }).from(
+        ".section-subtitle",
+        {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        },
+        "-=0.4"
+      );
+
+      // ✅ CARDS ANIMATION
       cards.forEach((card) => {
         gsap.from(card, {
           scrollTrigger: {
@@ -41,11 +66,11 @@ const Programs = () => {
     >
       {/* HEADER */}
       <div className="max-w-6xl mx-auto text-center space-y-6 mb-16">
-        <h2 className="font-modern-negra text-4xl md:text-6xl text-yellow-500">
+        <h2 className="section-title font-modern-negra text-4xl md:text-6xl text-yellow-500">
           My Mission
         </h2>
 
-        <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto">
+        <p className="section-subtitle text-white/80 text-lg md:text-xl max-w-3xl mx-auto">
           I’m not here to give you a generic workout plan. I’m here to give you
           the tools to master your body.
         </p>

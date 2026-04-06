@@ -1,9 +1,14 @@
 "use client";
 
 import { submitAudit } from "@/app/actions/submitAudit";
-import { useTransition } from "react";
+import { useRef, useTransition } from "react";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FormAudit = () => {
   const [isPending, startTransition] = useTransition();
@@ -12,9 +17,29 @@ const FormAudit = () => {
   const userEmail = user?.emailAddresses[0]?.emailAddress ?? "";
   const userName = user?.fullName ?? "";
 
+  const auditRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Correct GSAP usage
+  useGSAP(() => {
+    if (!auditRef.current) return;
+
+    gsap.from(auditRef.current, {
+      scrollTrigger: {
+        trigger: auditRef.current,
+        start: "top 85%",
+        toggleActions: "play none none reverse",
+      },
+      y: 60,
+      opacity: 0,
+      duration: 1,
+      ease: "power3.out",
+    });
+  }, []);
+
   return (
     <section
       id="audit"
+      ref={auditRef}
       className="min-h-screen flex items-center justify-center px-6 md:px-20 py-20"
     >
       <div className="max-w-3xl w-full bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-8">
@@ -45,7 +70,6 @@ const FormAudit = () => {
           }
           className="space-y-6"
         >
-          {/* Name */}
           <input
             name="name"
             placeholder="Your Name"
@@ -54,7 +78,6 @@ const FormAudit = () => {
             className="w-full p-3 rounded-lg bg-black/60 border border-white/10 text-white focus:border-yellow-500 outline-none disabled:opacity-50"
           />
 
-          {/* Email */}
           <input
             name="email"
             type="email"
@@ -69,7 +92,6 @@ const FormAudit = () => {
               }`}
           />
 
-          {/* Lift description */}
           <textarea
             name="lift"
             rows={4}
