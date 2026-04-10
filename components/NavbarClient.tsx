@@ -10,7 +10,7 @@ import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Navbar = () => {
+const NavbarClient = ({ role }: { role: string | null }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -28,6 +28,8 @@ const Navbar = () => {
       ease: "power1.out",
     });
   }, [scrolled]);
+
+  // ✅ REMOVED the broken useEffect that called setRole (role is a prop, not state)
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 transition-colors">
@@ -47,7 +49,7 @@ const Navbar = () => {
           </p>
         </Link>
 
-        {/* Desktop links + auth */}
+        {/* Desktop */}
         <div className="hidden lg:flex items-center justify-end gap-16">
           <ul className="flex gap-4 text-white">
             {navLinks.map((link) => (
@@ -62,7 +64,6 @@ const Navbar = () => {
             ))}
           </ul>
 
-          {/* Auth buttons */}
           <header className="flex justify-end items-center p-4 gap-4 h-16">
             <Show when="signed-out">
               <SignInButton />
@@ -72,41 +73,51 @@ const Navbar = () => {
                 </button>
               </SignUpButton>
             </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
 
             <Show when="signed-in">
               <Link
-                href="/admin"
+                href="/plan"
+                className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold"
+              >
+                My Plan
+              </Link>
+
+              <Link
+                href="/user"
                 className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
               >
-                Dashboard
+                Billing
               </Link>
+
+              {/* ✅ role prop used directly — no fetch needed */}
+              {role === "admin" && (
+                <Link
+                  href="/admin"
+                  className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
+                >
+                  Dashboard
+                </Link>
+              )}
+
+              <UserButton />
             </Show>
           </header>
         </div>
 
-        {/* Hamburger */}
+        {/* Mobile toggle */}
         <button
           className="lg:hidden flex flex-col gap-1.5"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          <span
-            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
-          />
-          <span
-            className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
-          />
+          <span className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
         </button>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <ul className="lg:hidden flex flex-col bg-black backdrop-blur-lg text-white p-6 gap-6">
+        <ul className="lg:hidden flex flex-col bg-black/90 backdrop-blur-lg text-white p-6 gap-6">
           {navLinks.map((link) => (
             <li key={link.id}>
               <Link
@@ -119,30 +130,29 @@ const Navbar = () => {
             </li>
           ))}
 
-          {/* Mobile auth */}
-          <li className="space-x-3 flex">
+          <li className="flex flex-col gap-3">
             <Show when="signed-out">
               <SignInButton />
               <SignUpButton>
-                <button className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold">
+                <button className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500">
                   Sign Up
                 </button>
               </SignUpButton>
             </Show>
-            <Show when="signed-in">
-              <UserButton />
-            </Show>
 
-            <div>
-              <Show when="signed-in">
-                <Link
-                  href="/admin"
-                  className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
-                >
+            <Show when="signed-in">
+              <Link href="/plan" onClick={() => setMobileOpen(false)}>My Plan</Link>
+              <Link href="/user" onClick={() => setMobileOpen(false)}>Billing</Link>
+
+              {/* ✅ role prop used directly */}
+              {role === "admin" && (
+                <Link href="/admin" onClick={() => setMobileOpen(false)}>
                   Dashboard
                 </Link>
-              </Show>
-            </div>
+              )}
+
+              <UserButton />
+            </Show>
           </li>
         </ul>
       )}
@@ -150,4 +160,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavbarClient;

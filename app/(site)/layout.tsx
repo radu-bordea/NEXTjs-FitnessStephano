@@ -1,9 +1,10 @@
-import Navbar from "@/components/Navbar";
+import NavbarServer from "@/components/NavbarServer";
+
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Navbar />
+      <NavbarServer/>
       {children}
     </>
   );
