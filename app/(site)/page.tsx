@@ -3,21 +3,22 @@ import gsap from "gsap";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Programs from "@/components/Programs";
-import FormAudit from "@/components/FormAudit";
+import FormAuditServer from "@/components/FormAuditServer";
 import Contact from "@/components/Contact";
 
 
 // Register GSAP plugins (required for them to work)
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
+
 export default function Home() {
   return (
     <main>
       <Hero />
-      <Programs/>
-      <FormAudit/>
-      <About/>
-      <Contact/>
+      <Programs />
+      <FormAuditServer />
+      <About />
+      <Contact />
     </main>
   );
 }

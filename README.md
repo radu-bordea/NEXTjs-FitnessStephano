@@ -21,3 +21,4 @@ npx create-next-app@latest nextjs-cocktails
 - npx prisma init --output ../app/generated/prisma
 - npx prisma migrate dev --name init
 - npx prisma migrate dev --name added-user-role
+- npx prisma migrate dev --name add-audit-limit

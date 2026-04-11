@@ -10,7 +10,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const auditSchema = z.object({
   name: z.string().min(2, { message: "Name is too short" }),
   email: z.string().pipe(z.email({ message: "Invalid email" })),
-  lift: z.string().min(10, { message: "Description to short" }),
+  lift: z.string().min(10, { message: "Description too short" }),
 });
 
 export async function submitAudit(formData: FormData) {
@@ -29,61 +29,70 @@ export async function submitAudit(formData: FormData) {
 
   const { name, email, lift } = result.data;
 
-  // 2. Check if signed in — works for both guests and members
-  const session = await auth();
-  const userId = session?.userId;
-  console.log("userId from Clerk:", userId); // add this
+  // 2. 🔒 REQUIRE LOGIN
+  const { userId, has } = await auth();
 
-  if (userId) {
-    // Signed in: ensure user exists in our DB
-    const clerkUser = await currentUser();
-    console.log("clerkUser:", clerkUser?.emailAddresses[0].emailAddress); // and this
-    await prisma.user.upsert({
-      where: { id: userId },
-      update: {},
-      create: {
-        id: userId,
-        email: clerkUser!.emailAddresses[0].emailAddress,
-        name: `${clerkUser!.firstName ?? ""} ${clerkUser!.lastName ?? ""}`.trim(),
-      },
-    });
+  if (!userId) {
+    throw new Error("Please sign in to submit an audit.");
   }
 
-  // 3. Save submission (userId is null for guests — totally fine)
+  const clerkUser = await currentUser();
+
+  // 3. Ensure user exists in DB
+  const user = await prisma.user.upsert({
+    where: { id: userId },
+    update: {},
+    create: {
+      id: userId,
+      email: clerkUser!.emailAddresses[0].emailAddress,
+      name: `${clerkUser!.firstName ?? ""} ${clerkUser!.lastName ?? ""}`.trim(),
+    },
+  });
+
+  // 4. Check subscription (Clerk)
+  const isSubscribed = has({ plan: "monthly_coaching" });
+
+  // 5. 🔥 LIMIT LOGIC
+  if (!isSubscribed && user.auditUsed >= 1) {
+    throw new Error(
+      "You’ve used your free audit. Upgrade to continue."
+    );
+  }
+
+  // 6. Save submission
   await prisma.auditSubmission.create({
     data: {
       name,
       email,
       lift,
-      ...(userId ? { user: { connect: { id: userId } } } : {}),
+      user: { connect: { id: userId } },
     },
   });
 
-  // 4. Send emails
+  // 7. Increment usage (ONLY free users)
+  if (!isSubscribed) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        auditUsed: { increment: 1 },
+      },
+    });
+  }
+
+  // 8. Send email (non-blocking)
   try {
     await resend.emails.send({
       from: "onboarding@resend.dev",
       to: process.env.TRAINER_EMAIL!,
       subject: `New audit request from ${name}`,
-      html: `<h2>New audit</h2><p><b>Name:</b> ${name}</p><p><b>Email:</b> ${email}</p><p><b>Focus:</b> ${lift ?? "—"}</p>`,
+      html: `<h2>New audit</h2>
+             <p><b>Name:</b> ${name}</p>
+             <p><b>Email:</b> ${email}</p>
+             <p><b>Focus:</b> ${lift ?? "—"}</p>`,
     });
   } catch (error) {
     console.error("Email failed but submission was saved:", error);
-    // don't rethrow — submission already succeeded
   }
-
-  // 5 confirmation to the user
-  // try {
-  //   await resend.emails.send({
-  //     from: "onboarding@resend.dev",
-  //     to: email,
-  //     subject: "Got your form audit request!",
-  //     html: `<p>Hey ${name}, I received your request and will review it shortly. 💪</p>`,
-  //   });
-  // } catch (error) {
-  //   console.error("Email failed but submission was saved:", error);
-  //   // don't rethrow — submission already succeeded
-  // }
 
   return { success: true };
 }

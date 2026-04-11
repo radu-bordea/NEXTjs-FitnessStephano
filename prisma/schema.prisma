@@ -22,6 +22,8 @@ model User {
   role String @default("user") // "user" or "admin"
   createdAt DateTime @default(now())
 
+// 👇 ADD THIS
+  auditUsed Int @default(0)
   auditSubmissions AuditSubmission[]
 }
 
