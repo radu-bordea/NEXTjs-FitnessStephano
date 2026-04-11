@@ -83,7 +83,7 @@ const NavbarClient = ({ role }: { role: string | null }) => {
               </Link>
 
               <Link
-                href="/user"
+                href="/pricing"
                 className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
               >
                 Billing
@@ -142,7 +142,7 @@ const NavbarClient = ({ role }: { role: string | null }) => {
 
             <Show when="signed-in">
               <Link href="/plan" onClick={() => setMobileOpen(false)}>My Plan</Link>
-              <Link href="/user" onClick={() => setMobileOpen(false)}>Billing</Link>
+              <Link href="/pricing" onClick={() => setMobileOpen(false)}>Billing</Link>
 
               {/* ✅ role prop used directly */}
               {role === "admin" && (
