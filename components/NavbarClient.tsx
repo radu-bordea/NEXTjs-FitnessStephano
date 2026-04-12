@@ -10,7 +10,13 @@ import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const NavbarClient = ({ role }: { role: string | null }) => {
+const NavbarClient = ({
+  role,
+  plan,
+}: {
+  role: string | null;
+  plan: "free" | "coaching";
+}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -99,6 +105,18 @@ const NavbarClient = ({ role }: { role: string | null }) => {
                 </Link>
               )}
 
+              {/* 🔥 PLAN BADGE */}
+              <span
+                className={`px-3 py-1 text-xs rounded-full border font-semibold
+    ${
+      plan === "coaching"
+        ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
+        : "bg-white/10 text-white/50 border-white/20"
+    }`}
+              >
+                {plan === "coaching" ? "Coaching 💪" : "Free"}
+              </span>
+
               <UserButton />
             </Show>
           </header>
@@ -109,9 +127,15 @@ const NavbarClient = ({ role }: { role: string | null }) => {
           className="lg:hidden flex flex-col gap-1.5"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          <span className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`}
+          />
+          <span
+            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
+          />
         </button>
       </div>
 
@@ -141,8 +165,12 @@ const NavbarClient = ({ role }: { role: string | null }) => {
             </Show>
 
             <Show when="signed-in">
-              <Link href="/plan" onClick={() => setMobileOpen(false)}>My Plan</Link>
-              <Link href="/pricing" onClick={() => setMobileOpen(false)}>Billing</Link>
+              <Link href="/plan" onClick={() => setMobileOpen(false)}>
+                My Plan
+              </Link>
+              <Link href="/pricing" onClick={() => setMobileOpen(false)}>
+                Billing
+              </Link>
 
               {/* ✅ role prop used directly */}
               {role === "admin" && (
@@ -150,6 +178,18 @@ const NavbarClient = ({ role }: { role: string | null }) => {
                   Dashboard
                 </Link>
               )}
+
+              {/* 🔥 PLAN BADGE */}
+              <span
+                className={`px-3 py-1 text-xs rounded-full border font-semibold
+    ${
+      plan === "coaching"
+        ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
+        : "bg-white/10 text-white/50 border-white/20"
+    }`}
+              >
+                {plan === "coaching" ? "Coaching 💪" : "Free"}
+              </span>
 
               <UserButton />
             </Show>

@@ -30,7 +30,7 @@ export default async function AuditsPage() {
             <TableRow className="border-white/10 hover:bg-white/5">
               <TableHead className="text-white/50">Name</TableHead>
               <TableHead className="text-white/50">Email</TableHead>
-              <TableHead className="text-white/50">Member</TableHead>
+              <TableHead className="text-white/50">User</TableHead>
               <TableHead className="text-white/50">Lift</TableHead>
               <TableHead className="text-white/50">Submitted</TableHead>
               <TableHead className="text-white/50">Detail</TableHead>
@@ -57,7 +57,7 @@ export default async function AuditsPage() {
                         : "bg-white/10 text-white/50 border-white/20"
                     }
                   >
-                    {audit.user ? "Member" : "Guest"}
+                    {audit.user ? "User" : "-"}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-white/70 max-w-50 truncate">
