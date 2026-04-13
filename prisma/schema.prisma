@@ -19,11 +19,14 @@ model User {
   id        String   @id // will store Clerk's userId
   email     String   @unique
   name      String?
-  role String @default("user") // "user" or "admin"
+  role      String   @default("user") // "user" or "admin"
   createdAt DateTime @default(now())
 
-// 👇 ADD THIS
-  auditUsed Int @default(0)
+  // ✅ THIS is your plan system
+  plan String @default("free")
+
+  // 👇 ADD THIS
+  auditUsed        Int               @default(0)
   auditSubmissions AuditSubmission[]
 }
 
@@ -34,6 +37,6 @@ model AuditSubmission {
   lift      String?
   createdAt DateTime @default(now())
 
-  userId String? 
+  userId String?
   user   User?   @relation(fields: [userId], references: [id])
 }

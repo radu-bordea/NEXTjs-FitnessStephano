@@ -38,25 +38,31 @@ export async function submitAudit(formData: FormData) {
 
   const clerkUser = await currentUser();
 
-  // 3. Ensure user exists in DB
+  if (!clerkUser) {
+    throw new Error("User not found.");
+  }
+
+  // 3. Check subscription (Clerk)
+  const isSubscribed = has({ plan: "monthly_coaching" });
+
+  // 4. Ensure user exists in DB + sync plan
   const user = await prisma.user.upsert({
     where: { id: userId },
-    update: {},
+    update: {
+      // ✅ update plan every time
+      plan: isSubscribed ? "monthly_coaching" : "free",
+    },
     create: {
       id: userId,
       email: clerkUser!.emailAddresses[0].emailAddress,
       name: `${clerkUser!.firstName ?? ""} ${clerkUser!.lastName ?? ""}`.trim(),
+      plan: isSubscribed ? "monthly_coaching" : "free", // ✅ set on create
     },
   });
 
-  // 4. Check subscription (Clerk)
-  const isSubscribed = has({ plan: "monthly_coaching" });
-
   // 5. 🔥 LIMIT LOGIC
   if (!isSubscribed && user.auditUsed >= 1) {
-    throw new Error(
-      "You’ve used your free audit. Upgrade to continue."
-    );
+    throw new Error("You’ve used your free audit. Upgrade to continue.");
   }
 
   // 6. Save submission
