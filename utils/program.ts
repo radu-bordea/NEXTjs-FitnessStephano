@@ -1,22 +1,31 @@
-import { FaDumbbell, FaUserAlt, FaRunning } from "react-icons/fa";
+import { FaBolt, FaCrown } from "react-icons/fa";
 
 export const programs = [
   {
-    icon: FaDumbbell,
-    title: "The Busy Professional",
+    icon: FaBolt,
+    title: "Standard Plan",
+    badge: "Most Popular",
     description:
-      "You have no time to waste. I provide high-efficiency workouts that deliver maximum results in minimum time.",
+      "A structured fitness system designed to get you results through personalized training and nutrition.",
+    features: [
+      "Personalised Workouts",
+      "Customised Meal Plan",
+      "Email Support",
+    ],
   },
   {
-    icon: FaUserAlt,
-    title: "The Gym Beginner",
+    icon: FaCrown,
+    title: "Professional Plan",
+    badge: "Elite Coaching",
     description:
-      "If you feel intimidated by the gym, I simplify everything so you can train with confidence and clarity from day one.",
-  },
-  {
-    icon: FaRunning,
-    title: "The Plateaued Lifter",
-    description:
-      "If you're stuck and not seeing results, I will analyze your form and fix the hidden mistakes holding you back.",
+      "Full coaching support with accountability, progress tracking, and deeper guidance for maximum transformation.",
+    features: [
+      "Personalised Workouts",
+      "Customised Meal Plan",
+      "Coaching / Progress Tracking",
+      "Video Demonstrations",
+      "Home or Gym Adaptation",
+      "Priority Email Support",
+    ],
   },
 ];
