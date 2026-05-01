@@ -76,12 +76,13 @@ useGSAP(() => {
         </p>
 
         {/* Call-to-action button */}
-        <Link
-          href="#cocktails"
+        <a
+          href="#programs"
           className="inline-block mt-6 px-8 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition-colors shadow-lg"
-        >
+          
+       >
           View Programs & Plans
-        </Link>
+        </a>
       </div>
     </section>
   );
