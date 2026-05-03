@@ -7,12 +7,18 @@ import { useUser, SignInButton } from "@clerk/nextjs";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const FormAudit = () => {
+type FormAuditProps = {
+  canSubmit: boolean;
+  reason: "not_logged_in" | "no_plan" | null;
+};
+
+const FormAudit = ({ canSubmit, reason }: FormAuditProps) => {
   const [isPending, startTransition] = useTransition();
-  const { user, isSignedIn } = useUser();
+  const { user } = useUser();
   const auditRef = useRef<HTMLDivElement>(null);
 
   const userEmail = user?.emailAddresses[0]?.emailAddress ?? "";
@@ -49,11 +55,9 @@ const FormAudit = () => {
         </p>
 
         {/* NOT SIGNED IN */}
-        {!isSignedIn && (
+        {reason === "not_logged_in" && (
           <div className="text-center space-y-4">
-            <p className="text-white/70">
-              Sign in to submit your audit.
-            </p>
+            <p className="text-white/70">Sign in to submit your audit.</p>
             <SignInButton mode="modal">
               <button className="px-6 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition">
                 Sign In to Continue
@@ -62,8 +66,22 @@ const FormAudit = () => {
           </div>
         )}
 
-        {/* SIGNED IN — show form */}
-        {isSignedIn && (
+        {/* NO PLAN */}
+        {reason === "no_plan" && (
+          <div className="text-center space-y-4">
+            <p className="text-white/70">
+              You need an active plan to submit an audit.
+            </p>
+            <Link href="/pricing">
+              <button className="px-6 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition">
+                View Plans
+              </button>
+            </Link>
+          </div>
+        )}
+
+        {/* FORM */}
+        {canSubmit && (
           <form
             action={(formData) =>
               startTransition(async () => {
@@ -99,11 +117,11 @@ const FormAudit = () => {
               required
               defaultValue={userEmail}
               readOnly={!!userEmail}
-              className={`w-full p-3 rounded-lg bg-black/60 border border-white/10 text-white outline-none
-                ${userEmail
+              className={`w-full p-3 rounded-lg bg-black/60 border border-white/10 text-white outline-none ${
+                userEmail
                   ? "opacity-60 cursor-not-allowed border-white/5"
                   : "focus:border-yellow-500"
-                }`}
+              }`}
             />
 
             <textarea
