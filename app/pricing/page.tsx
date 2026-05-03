@@ -9,8 +9,8 @@ export default function PricingPage() {
         <PricingTable />
       </div>
 
-      <p className="text-center text-white/50 mt-6 text-sm">
-        Cancel anytime. No hidden fees.
+      <p className="text-center text-white/80  mt-6 text-xl">
+        👉 To cancel or manage your subscription: go to your profile avatar → Manage account → Billing → Manage
       </p>
     </div>
   );

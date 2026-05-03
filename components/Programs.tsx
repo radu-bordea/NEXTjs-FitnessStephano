@@ -6,11 +6,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 import { programs } from "@/utils/program";
 import { FaCheck } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Programs = () => {
   const programsRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useGSAP(() => {
     const ctx = gsap.context(() => {
@@ -113,7 +115,10 @@ const Programs = () => {
                 ))}
               </ul>
 
-              <button className="w-full mt-8 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition">
+              <button
+                onClick={() => router.push("/pricing")}
+                className="w-full mt-8 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition"
+              >
                 Get Started
               </button>
             </div>

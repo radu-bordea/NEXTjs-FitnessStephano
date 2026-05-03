@@ -22,3 +22,10 @@ npx create-next-app@latest nextjs-cocktails
 - npx prisma migrate dev --name init
 - npx prisma migrate dev --name added-user-role
 - npx prisma migrate dev --name add-audit-limit
+- npx prisma migrate dev --name remove-plan-field
+- npx prisma migrate resolve --applied "name_of_your_last_migration"
+- npx prisma migrate dev --name sync-clean
+- npx prisma db push --accept-data-loss
+- npx prisma migrate resolve --applied "20260101000000_init"
+- npx prisma migrate status
+- npx prisma migrate dev --name describe_your_change

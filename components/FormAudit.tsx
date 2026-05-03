@@ -1,7 +1,7 @@
 "use client";
 
 import { submitAudit } from "@/app/actions/submitAudit";
-import { useRef, useTransition } from "react";
+import { useTransition, useRef } from "react";
 import { toast } from "sonner";
 import { useUser, SignInButton } from "@clerk/nextjs";
 import { useGSAP } from "@gsap/react";
@@ -10,23 +10,16 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type FormAuditProps = {
-  canSubmit: boolean;
-  reason: "not_logged_in" | "limit_reached" | null;
-};
-
-const FormAudit = ({ canSubmit, reason }: FormAuditProps) => {
+const FormAudit = () => {
   const [isPending, startTransition] = useTransition();
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
+  const auditRef = useRef<HTMLDivElement>(null);
 
   const userEmail = user?.emailAddresses[0]?.emailAddress ?? "";
   const userName = user?.fullName ?? "";
 
-  const auditRef = useRef<HTMLDivElement>(null);
-
   useGSAP(() => {
     if (!auditRef.current) return;
-
     gsap.from(auditRef.current, {
       scrollTrigger: {
         trigger: auditRef.current,
@@ -55,14 +48,13 @@ const FormAudit = ({ canSubmit, reason }: FormAuditProps) => {
           Send me your lift and I'll personally break down your form.
         </p>
 
-        {/* 🔒 NOT LOGGED IN */}
-        {reason === "not_logged_in" && (
+        {/* NOT SIGNED IN */}
+        {!isSignedIn && (
           <div className="text-center space-y-4">
             <p className="text-white/70">
-              Sign in to claim your free audit.
+              Sign in to submit your audit.
             </p>
-
-            <SignInButton>
+            <SignInButton mode="modal">
               <button className="px-6 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition">
                 Sign In to Continue
               </button>
@@ -70,29 +62,13 @@ const FormAudit = ({ canSubmit, reason }: FormAuditProps) => {
           </div>
         )}
 
-        {/* 🚫 LIMIT REACHED */}
-        {reason === "limit_reached" && (
-          <div className="text-center space-y-4">
-            <p className="text-white/70">
-              You’ve used your free audit.
-            </p>
-
-            <a href="/pricing">
-              <button className="px-6 py-3 bg-yellow-500 text-black font-bold rounded-lg hover:bg-yellow-600 transition">
-                Upgrade for Unlimited Audits
-              </button>
-            </a>
-          </div>
-        )}
-
-        {/* ✅ FORM */}
-        {canSubmit && (
+        {/* SIGNED IN — show form */}
+        {isSignedIn && (
           <form
             action={(formData) =>
               startTransition(async () => {
                 try {
                   await submitAudit(formData);
-
                   toast.success("Audit request sent 💪", {
                     duration: 2000,
                     style: {
@@ -123,7 +99,11 @@ const FormAudit = ({ canSubmit, reason }: FormAuditProps) => {
               required
               defaultValue={userEmail}
               readOnly={!!userEmail}
-              className="w-full p-3 rounded-lg bg-black/60 border border-white/10 text-white opacity-60 cursor-not-allowed"
+              className={`w-full p-3 rounded-lg bg-black/60 border border-white/10 text-white outline-none
+                ${userEmail
+                  ? "opacity-60 cursor-not-allowed border-white/5"
+                  : "focus:border-yellow-500"
+                }`}
             />
 
             <textarea
@@ -145,7 +125,7 @@ const FormAudit = ({ canSubmit, reason }: FormAuditProps) => {
         )}
 
         <p className="text-white/50 text-sm text-center mt-4">
-          Free users get 1 audit. Upgrade for unlimited access.
+          I personally review every submission.
         </p>
       </div>
     </section>

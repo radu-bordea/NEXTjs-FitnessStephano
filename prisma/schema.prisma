@@ -22,11 +22,7 @@ model User {
   role      String   @default("user") // "user" or "admin"
   createdAt DateTime @default(now())
 
-  // ✅ THIS is your plan system
-  plan String @default("free")
-
   // 👇 ADD THIS
-  auditUsed        Int               @default(0)
   auditSubmissions AuditSubmission[]
 }
 

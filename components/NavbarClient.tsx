@@ -15,7 +15,7 @@ const NavbarClient = ({
   plan,
 }: {
   role: string | null;
-  plan: "free" | "coaching";
+  plan: "none" | "standard" | "premium";
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -34,8 +34,6 @@ const NavbarClient = ({
       ease: "power1.out",
     });
   }, [scrolled]);
-
-  // ✅ REMOVED the broken useEffect that called setRole (role is a prop, not state)
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 transition-colors">
@@ -81,12 +79,21 @@ const NavbarClient = ({
             </Show>
 
             <Show when="signed-in">
-              <Link
-                href="/plan"
-                className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold"
-              >
-                My Plan
-              </Link>
+              {plan !== "none" ? (
+                <Link
+                  href="/plan"
+                  className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold"
+                >
+                  My Plan
+                </Link>
+              ) : (
+                <Link
+                  href="/pricing"
+                  className="px-4 py-1.5 rounded-lg border border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-black transition-colors text-sm font-semibold"
+                >
+                  Get a Plan
+                </Link>
+              )}
 
               <Link
                 href="/pricing"
@@ -95,47 +102,40 @@ const NavbarClient = ({
                 Billing
               </Link>
 
-              {/* ✅ role prop used directly — no fetch needed */}
               {role === "admin" && (
                 <Link
                   href="/admin"
                   className="px-4 py-1.5 rounded-lg border border-white/20 text-white/70 hover:border-yellow-500 hover:text-yellow-500 transition-colors text-sm font-semibold"
                 >
-                  Dashboard
+                  Admin
                 </Link>
               )}
 
-              {/* 🔥 PLAN BADGE */}
-              <span
-                className={`px-3 py-1 text-xs rounded-full border font-semibold
-    ${
-      plan === "coaching"
-        ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
-        : "bg-white/10 text-white/50 border-white/20"
-    }`}
-              >
-                {plan === "coaching" ? "Coaching 💪" : "Free"}
-              </span>
+              {plan !== "none" && (
+                <span
+                  className={`px-3 py-1 text-xs rounded-full border font-semibold ${
+                    plan === "premium"
+                      ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
+                      : "bg-white/20 text-white border-white/30"
+                  }`}
+                >
+                  {plan === "premium" ? "Premium 💪" : "Standard"}
+                </span>
+              )}
 
               <UserButton />
             </Show>
           </header>
         </div>
 
-        {/* Mobile toggle */}
+        {/* Hamburger */}
         <button
           className="lg:hidden flex flex-col gap-1.5"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
-          <span
-            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`}
-          />
-          <span
-            className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`}
-          />
+          <span className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-opacity ${mobileOpen ? "opacity-0" : ""}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-transform ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
         </button>
       </div>
 
@@ -165,31 +165,37 @@ const NavbarClient = ({
             </Show>
 
             <Show when="signed-in">
-              <Link href="/plan" onClick={() => setMobileOpen(false)}>
-                My Plan
-              </Link>
+              {plan !== "none" ? (
+                <Link href="/plan" onClick={() => setMobileOpen(false)}>
+                  My Plan
+                </Link>
+              ) : (
+                <Link href="/pricing" onClick={() => setMobileOpen(false)}>
+                  Get a Plan
+                </Link>
+              )}
+
               <Link href="/pricing" onClick={() => setMobileOpen(false)}>
                 Billing
               </Link>
 
-              {/* ✅ role prop used directly */}
               {role === "admin" && (
                 <Link href="/admin" onClick={() => setMobileOpen(false)}>
-                  Dashboard
+                  Admin
                 </Link>
               )}
 
-              {/* 🔥 PLAN BADGE */}
-              <span
-                className={`px-3 py-1 text-xs rounded-full border font-semibold
-    ${
-      plan === "coaching"
-        ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
-        : "bg-white/10 text-white/50 border-white/20"
-    }`}
-              >
-                {plan === "coaching" ? "Coaching 💪" : "Free"}
-              </span>
+              {plan !== "none" && (
+                <span
+                  className={`px-3 py-1 text-xs rounded-full border font-semibold ${
+                    plan === "premium"
+                      ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"
+                      : "bg-white/20 text-white border-white/30"
+                  }`}
+                >
+                  {plan === "premium" ? "Premium 💪" : "Standard"}
+                </span>
+              )}
 
               <UserButton />
             </Show>

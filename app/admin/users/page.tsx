@@ -9,6 +9,27 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
+// When Stripe is fully set up, the clean solution is to store stripeSubscriptionStatus back in Prisma so you can query it efficiently. Something like:
+// prismamodel User {
+//   // existing fields...
+//   stripeCustomerId     String?
+//   subscriptionStatus   String?  // "active" | "cancelled" | null
+// }
+
+// // When user subscribes → webhook fires → you save to DB
+// await prisma.user.update({
+//   where: { stripeCustomerId: customerId },
+//   data: {
+//     subscriptionStatus: "active",
+//     planType: "premium", // or "standard"
+//   },
+// });
+
+{/* <Badge>
+  {user.planType ?? "No plan"}
+</Badge> */}
+
+
 export default async function UsersPage() {
   const users = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
@@ -30,8 +51,6 @@ export default async function UsersPage() {
               <TableHead className="text-white/50">Name</TableHead>
               <TableHead className="text-white/50">Email</TableHead>
               <TableHead className="text-white/50">Role</TableHead>
-              {/* ✅ NEW */}
-              <TableHead className="text-white/50">Plan</TableHead>
               <TableHead className="text-white/50">Audits</TableHead>
               <TableHead className="text-white/50">Joined</TableHead>
             </TableRow>
@@ -46,7 +65,6 @@ export default async function UsersPage() {
                   {user.name ?? "—"}
                 </TableCell>
                 <TableCell className="text-white/70">{user.email}</TableCell>
-                {/* ROLE */}
                 <TableCell>
                   <Badge
                     className={
@@ -59,23 +77,6 @@ export default async function UsersPage() {
                     {user.role}
                   </Badge>
                 </TableCell>
-
-                {/* ✅ PLAN */}
-                <TableCell>
-                  <Badge
-                    variant="outline"
-                    className={
-                      user.plan === "monthly_coaching"
-                        ? "bg-green-500/20 text-green-400 border-green-500/30"
-                        : "bg-white/10 text-white/70 border-white/20"
-                    }
-                  >
-                    {user.plan === "monthly_coaching"
-                      ? "Monthly Coaching"
-                      : "Free"}
-                  </Badge>
-                </TableCell>
-                {/* AUDITS */}
                 <TableCell className="text-white/70">
                   {user._count.auditSubmissions}
                 </TableCell>
