@@ -72,7 +72,7 @@ const Programs = () => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 max-w-6xl mx-auto">
         {programs.map((program, index) => {
           const Icon = program.icon;
 
