@@ -15,7 +15,7 @@ const NavbarClient = ({
   plan,
 }: {
   role: string | null;
-  plan: "none" | "standard" | "premium";
+  plan: "none" | "starter" | "standard" | "premium";
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -119,7 +119,7 @@ const NavbarClient = ({
                       : "bg-white/20 text-white border-white/30"
                   }`}
                 >
-                  {plan === "premium" ? "Premium 💪" : "Standard"}
+                  {plan === "premium" ? "Premium 💪" : plan === "starter" ? "Starter" : "Standard"}
                 </span>
               )}
 

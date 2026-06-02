@@ -41,6 +41,12 @@ export default async function AdminLayout({
           >
             Audits
           </Link>
+          <Link
+            href="/admin/videos"
+            className="hover:text-yellow-500 transition-colors"
+          >
+            Videos
+          </Link>
 
           <Link
             href="/"

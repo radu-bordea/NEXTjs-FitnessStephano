@@ -36,3 +36,14 @@ model AuditSubmission {
   userId String?
   user   User?   @relation(fields: [userId], references: [id])
 }
+
+
+model Video {
+  id String @id @default(cuid())
+  title String
+  description String?
+  url String // Cloudinary URL
+  publicId String // Cloudinary public ID (for deletion)
+  plan String @default("premium") // "standard" | "premium" | all
+  createdAt DateTime @default(now())
+}

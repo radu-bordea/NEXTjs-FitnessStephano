@@ -9,6 +9,7 @@ npx create-next-app@latest nextjs-cocktails
 - npm install zod
 - npm install @clerk/nextjs
 - npm install resend
+- npm install cloudinary next-cloudinary
 
 // SHADCN
 - npx shadcn@latest init
@@ -29,3 +30,4 @@ npx create-next-app@latest nextjs-cocktails
 - npx prisma migrate resolve --applied "20260101000000_init"
 - npx prisma migrate status
 - npx prisma migrate dev --name describe_your_change
+- npx prisma migrate dev --name add-video
