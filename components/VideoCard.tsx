@@ -1,20 +1,35 @@
 "use client";
 
-import {Video} from "@/types";
+import { Video } from "@/types";
 
-
-const VideoCard = ({ video, premium = false }: { video: Video; premium?: boolean }) => {
+const VideoCard = ({
+  video,
+  premium = false,
+}: {
+  video: Video;
+  premium?: boolean;
+}) => {
   return (
-    <div className={`rounded-xl border transition-colors overflow-hidden ${
-      premium
-        ? "border-yellow-500/20 hover:border-yellow-500/50"
-        : "border-white/10 hover:border-white/30"
-    }`}>
-      <div style={{ width: "100%", height: "200px", overflow: "hidden", backgroundColor: "#000" }}>
+    <div
+      className={`rounded-xl border transition-colors overflow-hidden ${
+        premium
+          ? "border-yellow-500/20 hover:border-yellow-500/50"
+          : "border-white/10 hover:border-white/30"
+      }`}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: "200px",
+          overflow: "hidden",
+          backgroundColor: "#000",
+        }}
+      >
         <video
           src={video.url}
           controls
           preload="none"
+          playsInline
           style={{ width: "100%", height: "100%" }}
         />
       </div>

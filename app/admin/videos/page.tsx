@@ -68,17 +68,6 @@ action={(formData) =>
           />
         </div>
 
-        <div>
-          <label className="block text-white/70 text-sm mb-2">Available for</label>
-          <select
-            name="plan"
-            className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white focus:border-yellow-500 outline-none bg-black"
-          >
-            <option value="premium">Premium only</option>
-            <option value="standard">Standard + Premium</option>
-            <option value="starter">Starter + Standard + Premium</option>
-          </select>
-        </div>
 
         <div>
           <label className="block text-white/70 text-sm mb-2">Video file</label>

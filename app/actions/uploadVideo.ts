@@ -15,7 +15,7 @@ export async function uploadVideo(formData: FormData) {
   const file = formData.get("video") as File;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
-  const plan = formData.get("plan") as string;
+
 
   if (!file || !title) throw new Error("Missing required fields");
 
@@ -49,7 +49,6 @@ export async function uploadVideo(formData: FormData) {
       description,
       url: result.secure_url,
       publicId: result.public_id,
-      plan,
     },
   });
 

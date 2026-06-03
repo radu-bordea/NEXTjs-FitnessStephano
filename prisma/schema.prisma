@@ -44,6 +44,6 @@ model Video {
   description String?
   url String // Cloudinary URL
   publicId String // Cloudinary public ID (for deletion)
-  plan String @default("premium") // "standard" | "premium" | all
   createdAt DateTime @default(now())
 }
+

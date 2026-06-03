@@ -14,6 +14,5 @@ export type Video = {
   title: string;
   description: string | null;
   url: string;
-  plan: string;
   createdAt: Date;
 };
