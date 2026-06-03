@@ -2,36 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-
-type Video = {
-  id: string;
-  title: string;
-  description: string | null;
-  url: string;
-  plan: string;
-  createdAt: Date;
-};
-
-const VideoCard = ({ video, premium = false }: { video: Video; premium?: boolean }) => (
-  <div className={`bg-black/40 rounded-xl overflow-hidden border transition-colors ${
-    premium
-      ? "border-yellow-500/20 hover:border-yellow-500/50"
-      : "border-white/10 hover:border-white/30"
-  }`}>
-    <video
-      src={video.url}
-      controls
-      preload="none"
-      className="w-full h-48 object-cover"
-    />
-    <div className="p-3">
-      <h3 className="text-white font-semibold text-sm mb-1">{video.title}</h3>
-      {video.description && (
-        <p className="text-white/50 text-xs">{video.description}</p>
-      )}
-    </div>
-  </div>
-);
+import VideoCard from "@/components/VideoCard";
 
 const DashboardPage = async () => {
   const { has, userId } = await auth();
@@ -128,7 +99,9 @@ const DashboardPage = async () => {
         {/* Standard videos — visible to standard + premium */}
         {(isStandard || isPremium) && standardVideos.length > 0 && (
           <div className="p-6 bg-white/5 rounded-xl">
-            <h2 className="text-xl font-semibold mb-6">🎥 Standard Video Guides</h2>
+            <h2 className="text-xl font-semibold mb-6">
+              🎥 Standard Video Guides
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {standardVideos.map((video) => (
                 <VideoCard key={video.id} video={video} />
@@ -162,7 +135,7 @@ const DashboardPage = async () => {
             <p className="text-white/70">
               Direct access to your trainer via Instagram or WhatsApp.
             </p>
-              <a
+            <a
               href="https://instagram.com/stephanofitness"
               target="_blank"
               rel="noreferrer"

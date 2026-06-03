@@ -8,3 +8,12 @@ export type AuditFormData = {
   email: string;
   lift: string;
 };
+
+export type Video = {
+  id: string;
+  title: string;
+  description: string | null;
+  url: string;
+  plan: string;
+  createdAt: Date;
+};
