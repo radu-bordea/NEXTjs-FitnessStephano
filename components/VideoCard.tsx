@@ -28,7 +28,7 @@ const VideoCard = ({
         <video
           src={video.url}
           controls
-          preload="none"
+          preload="metadata"
           playsInline
           style={{ width: "100%", height: "100%" }}
         />
