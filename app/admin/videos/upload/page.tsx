@@ -4,20 +4,17 @@ import { uploadVideo } from "@/app/actions/uploadVideo";
 import { useTransition, useState, useRef } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { Link } from "lucide-react";
+import Link from "next/link"; // ← fix this import
 
 export default function AdminVideosPage() {
   const [isPending, startTransition] = useTransition();
   const [preview, setPreview] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
-
-  // inside component:
   const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Warn if file is too large (over 100MB)
       if (file.size > 100 * 1024 * 1024) {
         toast.error("File too large — max 100MB");
         e.target.value = "";
@@ -32,9 +29,9 @@ export default function AdminVideosPage() {
       <h1 className="text-3xl font-bold mb-8">Upload Video</h1>
       <Link
         href="/admin/videos"
-        className="hover:text-yellow-500 transition-colors"
+        className="text-sm text-white/50 hover:text-yellow-500 transition-colors mb-6 inline-block"
       >
-        Videos
+        ← Back to videos
       </Link>
 
       <form
@@ -66,9 +63,7 @@ export default function AdminVideosPage() {
         </div>
 
         <div>
-          <label className="block text-white/70 text-sm mb-2">
-            Description
-          </label>
+          <label className="block text-white/70 text-sm mb-2">Description</label>
           <textarea
             name="description"
             rows={3}
@@ -87,7 +82,7 @@ export default function AdminVideosPage() {
             onChange={handleFileChange}
             className="w-full p-3 rounded-lg bg-white/5 border border-white/10 text-white outline-none"
           />
-          <p className="text-white/30 text-xs mt-1">
+          <p className="text-white/40 text-xs mt-1">
             Max 100MB. Keep videos under 60 seconds for best performance.
           </p>
         </div>
@@ -97,13 +92,13 @@ export default function AdminVideosPage() {
             <video
               src={preview}
               controls
-              className="w-full rounded-xl border border-white/10"
+              muted
+              preload="metadata"
+              className="w-full max-h-48 rounded-xl border border-white/10"
             />
             <button
               type="button"
-              onClick={() => {
-                setPreview(null);
-              }}
+              onClick={() => setPreview(null)}
               className="absolute top-2 right-2 px-2 py-1 bg-black/70 text-white/70 rounded text-xs hover:text-white"
             >
               Remove
@@ -111,7 +106,6 @@ export default function AdminVideosPage() {
           </div>
         )}
 
-        {/* Upload progress indicator */}
         {isPending && (
           <div className="w-full bg-white/10 rounded-full h-1.5">
             <div className="bg-yellow-500 h-1.5 rounded-full animate-pulse w-full" />
@@ -127,6 +121,9 @@ export default function AdminVideosPage() {
             {isPending ? "Uploading... please wait" : "Upload Video"}
           </span>
         </button>
+        {!isPending && preview && (
+          <p className="text-white/40 text-xs mt-1">Preview — not uploaded yet</p>
+        )}
       </form>
     </div>
   );
