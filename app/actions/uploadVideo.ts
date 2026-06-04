@@ -16,7 +16,6 @@ export async function uploadVideo(formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
 
-
   if (!file || !title) throw new Error("Missing required fields");
 
   const bytes = await file.arrayBuffer();
@@ -29,18 +28,15 @@ export async function uploadVideo(formData: FormData) {
           {
             resource_type: "video",
             folder: "fitness-app/videos",
-            transformation: [
-              { quality: "auto" },
-              { fetch_format: "auto" },
-            ],
+            transformation: [{ quality: "auto" }, { fetch_format: "auto" }],
           },
           (error, result) => {
             if (error) reject(error);
             else resolve(result as { secure_url: string; public_id: string });
-          }
+          },
         )
         .end(buffer);
-    }
+    },
   );
 
   await prisma.video.create({
@@ -51,6 +47,28 @@ export async function uploadVideo(formData: FormData) {
       publicId: result.public_id,
     },
   });
+
+  revalidatePath("/admin/videos");
+  revalidatePath("/plan");
+}
+
+export async function deleteVideo(videoId: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Not authenticated");
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user || user.role !== "admin") throw new Error("Not authorized");
+
+  const video = await prisma.video.findUnique({ where: { id: videoId } });
+  if (!video) throw new Error("Video not found");
+
+  // Delete from Cloudinary
+  await cloudinary.uploader.destroy(video.publicId, {
+    resource_type: "video",
+  });
+
+  // Delete from database
+  await prisma.video.delete({ where: { id: videoId } });
 
   revalidatePath("/admin/videos");
   revalidatePath("/plan");
